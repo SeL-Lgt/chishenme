@@ -45,14 +45,6 @@ body {
   cursor: pointer;
 }
 
-#stop {
-  display: none;
-  width: 120px;
-  height: 40px;
-  vertical-align: middle;
-  font-family: "微软雅黑";
-  cursor: pointer;
-}
 
 #cfg {
   color: #666;

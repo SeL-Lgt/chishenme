@@ -1,51 +1,59 @@
-$(function () {
-  var run = 0,
-    heading = $("h1"),
-    timer;
+import list from "./food/dj.js";
 
-  $("#start").click(function () {
-    var list = $("#list")
-      .val()
-      .replace(/ +/g, " ")
-      .replace(/^ | $/g, "")
-      .split(" ");
+function random() {
+  let run = 0;
+  const heading = document.querySelector("h1");
+  let timer;
+
+  document.getElementById("start").addEventListener("click", function () {
     if (!run) {
-      heading.html(heading.html().replace("吃这个！", "吃什么？"));
-      $(this).val("停止");
+      heading.innerHTML = heading.innerHTML.replace("吃这个！", "吃什么？");
+      this.value = "停止";
       timer = setInterval(function () {
-        var r = Math.ceil(Math.random() * list.length),
+        const r = Math.ceil(Math.random() * list.length),
           food = list[r - 1];
-        $("#what").html(food);
-        var rTop = Math.ceil(Math.random() * $(document).height()),
-          rLeft = Math.ceil(Math.random() * ($(document).width() - 50)),
+        document.getElementById("what").innerHTML = food;
+        const rTop = Math.ceil(Math.random() * document.documentElement.clientHeight),
+          rLeft = Math.ceil(Math.random() * (document.documentElement.clientWidth - 50)),
           rSize = Math.ceil(Math.random() * (37 - 14) + 14);
-        $("<span class='temp'></span>")
-          .html(food)
-          .hide()
-          .css({
-            top: rTop,
-            left: rLeft,
-            color: "rgba(0,0,0,." + Math.random() + ")",
-            fontSize: rSize + "px",
-          })
-          .appendTo("body")
-          .fadeIn("slow", function () {
-            $(this).fadeOut("slow", function () {
-              $(this).remove();
+        const span = document.createElement("span");
+        span.className = "temp";
+        span.innerHTML = food;
+        span.style.display = "none";
+        span.style.position = "absolute";
+        span.style.top = rTop + "px";
+        span.style.left = rLeft + "px";
+        span.style.color = "rgba(0,0,0," + Math.random() + ")";
+        span.style.fontSize = rSize + "px";
+        document.body.appendChild(span);
+        span.style.display = "block";
+        span.style.opacity = 0;
+        setTimeout(() => {
+          span.style.transition = "opacity 1s";
+          span.style.opacity = 1;
+          setTimeout(() => {
+            span.style.opacity = 0;
+            span.addEventListener("transitionend", () => {
+              document.body.removeChild(span);
             });
-          });
+          }, 1000);
+        }, 0);
       }, 50);
       run = 1;
     } else {
-      heading.html(heading.html().replace("吃什么？", "吃这个！"));
-      $(this).val("不行，换一个");
+      heading.innerHTML = heading.innerHTML.replace("吃什么？", "吃这个！");
+      this.value = "不行，换一个";
       clearInterval(timer);
       run = 0;
     }
   });
 
-  document.onkeydown = function enter(e) {
-    var e = e || event;
-    if (e.keyCode == 13) $("#start").trigger("click");
-  };
-});
+  document.addEventListener("keydown", function enter(e) {
+    e = e || event;
+    if (e.keyCode === 13 || e.key === "Enter") {
+      document.getElementById("start").click();
+    }
+  });
+}
+
+random();

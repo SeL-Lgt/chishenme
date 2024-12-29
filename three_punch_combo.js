@@ -1,12 +1,9 @@
-$i = 0;
-$("#start").click(function () {
-  $i++;
-  if ($i >= 6) {
-    $("#start").hide();
-    $("#stop").show();
+let i = 0;
+
+document.getElementById("start").addEventListener("click", function () {
+  i++;
+  if (i >= 6) {
+    alert("这么作？今天别吃了！");
+    document.getElementById("start").style.display = "none";
   }
-});
-$("#stop").click(function () {
-  alert("这么作？今天别吃了！");
-  $(this).hide();
 });
